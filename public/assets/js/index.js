@@ -4,8 +4,11 @@ const $saveNoteBtn = $(".save-note");
 const $newNoteBtn = $(".new-note");
 const $noteList = $(".list-container .list-group");
 
+let count = 0;
+
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
+activeNote.id = count;
 
 // A function for getting all notes from the db
 const getNotes = () => {
@@ -49,6 +52,20 @@ const renderActiveNote = () => {
   }
 };
 
+// Handle the active note function
+$($noteTitle).on('change', function(e){
+  e.preventDefault();
+  activeNote.title = $noteTitle.val();
+  console.log(activeNote.title);
+});
+
+$($noteText).on('change', function(e){
+  e.preventDefault();
+  activeNote.text = $noteText.val();
+  console.log(activeNote.text);
+});
+
+
 // Get the note data from the inputs, save it to the db and update the view
 const handleNoteSave = function () {
   const newNote = {
@@ -60,6 +77,7 @@ const handleNoteSave = function () {
     getAndRenderNotes();
     renderActiveNote();
   });
+  count++;
 };
 
 // Delete the clicked note
