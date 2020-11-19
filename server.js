@@ -22,12 +22,12 @@ app.listen(PORT, function() {
 var notes = JSON.parse(fs.readFileSync(path.join(__dirname, "/db/db.json")));
 console.log(notes);
 
-// Basic route that sends the user first to the AJAX Page
+// homepage
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, "index.html"));
   });
   
-// Note maker
+// note maker
 app.get("/notes", function(req, res) {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
@@ -43,7 +43,7 @@ app.get('/*',function (req, res) {
 });
 
 
-// Create New Tables
+// make new notes
 
 app.post("/api/notes", function(req, res) {
 
@@ -84,7 +84,7 @@ app.delete("/api/delete/:id", function(req, res) {
         notes[i].id = i;
     }
 
-    
+    // update db.json file with new array
     fs.writeFileSync(path.join(__dirname, "/db/db.json"), JSON.stringify(notes), (err) => {
         if (err) {
           console.error(err);
