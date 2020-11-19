@@ -71,10 +71,26 @@ app.post("/api/notes", function(req, res) {
 // Delete function
 app.delete("/api/delete/:id", function(req, res) {
 
+    // Get the right object you want to delete
     var del = req.params.id;
     parseInt(del);
     console.log(del);
 
+    // Delete it
     notes.splice(del, 1);
+
+    // Reset the IDs based on the deletion
+    for (let i=0; i < notes.length; i++) {
+        notes[i].id = i;
+    }
+
+    
+    fs.writeFileSync(path.join(__dirname, "/db/db.json"), JSON.stringify(notes), (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("Successfully wrote to db.JSON");
+        }
+      });
 
 })
