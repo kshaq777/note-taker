@@ -45,35 +45,26 @@ app.get('/*',function (req, res) {
 
 // Create New Tables
 
-app.post("/api/tables", function(req, res) {
+app.post("/api/notes", function(req, res) {
 
-    var reserved;
+    var newNote = req.body;
+    newNote.id = notes.length;
 
-    if (tables.length < 6) {
-    var newTable = req.body;
+    console.log(newNote);
     
-    console.log(newTable);
-    reserved = true;
-    console.log(reserved)
-    
-    tables.push(newTable);
+    notes.push(newNote);
 
-    res.json(newTable);
+    res.json(newNote);
 
-    }
+    console.log(notes);
 
-    else {
-
-        var newTable = req.body;
-    
-        console.log(newTable);
-        reserved = false;
-        console.log(reserved)
-                
-        waiters.push(newTable);
-    
-        res.json(newTable);
-    }
+    fs.writeFileSync(path.join(__dirname, "/db/db.json"), JSON.stringify(notes), (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("Successfully wrote to db.JSON");
+        }
+      });
     
 })
 
@@ -84,7 +75,6 @@ app.delete("/api/delete/:id", function(req, res) {
     parseInt(del);
     console.log(del);
 
-    tables.splice(del, 1);
-
+    notes.splice(del, 1);
 
 })
